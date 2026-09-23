@@ -1,1 +1,338 @@
 
+<!DOCTYPE html><html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pearl Hunter</title><style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0f1115;
+  color:#fff;
+}
+header{
+  padding:20px;
+  text-align:center;
+  background:#171a21;
+  border-bottom:1px solid #292e38;
+}
+h1{margin:0 0 6px}
+.subtitle{color:#9da5b4}
+
+nav{
+  display:flex;
+  overflow-x:auto;
+  background:#171a21;
+  border-bottom:1px solid #292e38;
+}
+nav button{
+  flex:1;
+  min-width:110px;
+  padding:15px 10px;
+  border:0;
+  background:transparent;
+  color:#aaa;
+  font-weight:bold;
+  cursor:pointer;
+}
+nav button.active{
+  color:#fff;
+  background:#252a34;
+}
+
+main{padding:20px;max-width:900px;margin:auto}
+
+.tab{display:none}
+.tab.active{display:block}
+
+.card{
+  background:#171a21;
+  border:1px solid #292e38;
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:16px;
+}
+
+label{
+  display:block;
+  margin:12px 0 6px;
+  color:#b8bfca;
+}
+
+input,select{
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  border:1px solid #363c48;
+  background:#0f1115;
+  color:#fff;
+  font-size:16px;
+}
+
+button.action{
+  width:100%;
+  padding:13px;
+  margin-top:15px;
+  border:0;
+  border-radius:9px;
+  background:#fff;
+  color:#111;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.result{
+  margin-top:15px;
+  padding:15px;
+  background:#0f1115;
+  border-radius:10px;
+}
+
+.big{
+  font-size:28px;
+  font-weight:bold;
+  margin:8px 0;
+}
+
+.item{
+  padding:14px 0;
+  border-bottom:1px solid #292e38;
+}
+
+.item:last-child{border-bottom:0}
+
+.small{color:#929aa8;font-size:14px}
+
+.status{
+  padding:10px;
+  border-radius:8px;
+  background:#222733;
+  color:#bfc7d4;
+}
+</style></head><body><header>
+  <h1>💎 Pearl Hunter</h1>
+  <div class="subtitle">Chasseur d'opportunités en ligne</div>
+</header><nav>
+  <button class="active" onclick="showTab('recherche',this)">🔎 Recherche</button>
+  <button onclick="showTab('prix',this)">💰 Prix</button>
+  <button onclick="showTab('marge',this)">📈 Marge</button>
+  <button onclick="showTab('opportunites',this)">💎 Opportunités</button>
+  <button onclick="showTab('sources',this)">🌐 Sources</button>
+  <button onclick="showTab('parametres',this)">⚙️ Paramètres</button>
+</nav><main><!-- RECHERCHE --><section id="recherche" class="tab active">
+  <div class="card">
+    <h2>🔎 Recherche</h2><label>Produit à rechercher</label>
+<input id="search" placeholder="Ex : PS5, iPhone, outil...">
+
+<label>Prix maximum d'achat (€)</label>
+<input id="maxBuy" type="number" placeholder="100">
+
+<button class="action" onclick="searchProduct()">
+  Lancer la recherche
+</button>
+
+<div id="searchResult" class="result">
+  Prêt à rechercher.
+</div>
+
+  </div>
+</section><!-- PRIX --><section id="prix" class="tab">
+  <div class="card">
+    <h2>💰 Analyse des prix</h2><label>Prix d'achat (€)</label>
+<input id="buyPrice" type="number" step="0.01" value="50">
+
+<label>Prix de revente (€)</label>
+<input id="sellPrice" type="number" step="0.01" value="100">
+
+<label>Frais (€)</label>
+<input id="fees" type="number" step="0.01" value="10">
+
+<button class="action" onclick="calculate()">
+  Calculer
+</button>
+
+<div id="priceResult" class="result">
+  Entre les prix puis lance le calcul.
+</div>
+
+  </div>
+</section><!-- MARGE --><section id="marge" class="tab">
+  <div class="card">
+    <h2>📈 Calcul de marge</h2><label>Prix d'achat (€)</label>
+<input id="marginBuy" type="number" step="0.01" value="50">
+
+<label>Prix de vente (€)</label>
+<input id="marginSell" type="number" step="0.01" value="100">
+
+<label>Frais totaux (€)</label>
+<input id="marginFees" type="number" step="0.01" value="10">
+
+<button class="action" onclick="calculateMargin()">
+  Calculer la marge
+</button>
+
+<div id="marginResult" class="result">
+  <div class="small">Marge nette</div>
+  <div class="big">—</div>
+</div>
+
+  </div>
+</section><!-- OPPORTUNITÉS --><section id="opportunites" class="tab">
+  <div class="card">
+    <h2>💎 Opportunités</h2><div class="item">
+  <strong>Scanner les opportunités</strong>
+  <p class="small">
+    Les résultats provenant des sources connectées apparaîtront ici.
+  </p>
+  <button class="action" onclick="scanOpportunities()">
+    Scanner
+  </button>
+</div>
+
+<div id="opportunityResult" class="result">
+  Aucune recherche effectuée.
+</div>
+
+  </div>
+</section><!-- SOURCES --><section id="sources" class="tab">
+  <div class="card">
+    <h2>🌐 Sources</h2><div class="item">
+  <strong>Sources Internet</strong>
+  <p class="small">
+    Cette section est prévue pour connecter Pearl Hunter à plusieurs
+    sources publiques du Web.
+  </p>
+</div>
+
+<div class="item">
+  <strong>État du moteur</strong>
+  <div class="status" id="engineStatus">
+    En attente de connexion aux sources.
+  </div>
+</div>
+
+  </div>
+</section><!-- PARAMÈTRES --><section id="parametres" class="tab">
+  <div class="card">
+    <h2>⚙️ Paramètres</h2><label>Frais par défaut (€)</label>
+<input id="defaultFees" type="number" value="10">
+
+<label>Marge minimale souhaitée (%)</label>
+<input id="minimumMargin" type="number" value="20">
+
+<button class="action" onclick="saveSettings()">
+  Enregistrer
+</button>
+
+<div id="settingsResult" class="result">
+  Paramètres actuels.
+</div>
+
+  </div>
+</section></main><script>
+
+function showTab(id,button){
+
+  document.querySelectorAll('.tab')
+    .forEach(tab => tab.classList.remove('active'));
+
+  document.querySelectorAll('nav button')
+    .forEach(btn => btn.classList.remove('active'));
+
+  document.getElementById(id).classList.add('active');
+
+  button.classList.add('active');
+}
+
+
+function calculate(){
+
+  const buy = parseFloat(document.getElementById('buyPrice').value) || 0;
+  const sell = parseFloat(document.getElementById('sellPrice').value) || 0;
+  const fees = parseFloat(document.getElementById('fees').value) || 0;
+
+  const net = sell - buy - fees;
+
+  const margin = sell > 0
+    ? (net / sell) * 100
+    : 0;
+
+  document.getElementById('priceResult').innerHTML = `
+    <div class="small">Bénéfice net</div>
+    <div class="big">${net.toFixed(2)} €</div>
+    <div class="small">Marge : ${margin.toFixed(2)} %</div>
+  `;
+}
+
+
+function calculateMargin(){
+
+  const buy = parseFloat(document.getElementById('marginBuy').value) || 0;
+  const sell = parseFloat(document.getElementById('marginSell').value) || 0;
+  const fees = parseFloat(document.getElementById('marginFees').value) || 0;
+
+  const net = sell - buy - fees;
+
+  const margin = sell > 0
+    ? (net / sell) * 100
+    : 0;
+
+  document.getElementById('marginResult').innerHTML = `
+    <div class="small">Bénéfice net</div>
+    <div class="big">${net.toFixed(2)} €</div>
+    <div class="small">Marge nette : ${margin.toFixed(2)} %</div>
+  `;
+}
+
+
+function searchProduct(){
+
+  const product = document.getElementById('search').value;
+  const maxBuy = document.getElementById('maxBuy').value;
+
+  if(!product){
+    document.getElementById('searchResult').innerHTML =
+      'Entre un produit à rechercher.';
+    return;
+  }
+
+  document.getElementById('searchResult').innerHTML = `
+    <strong>Recherche préparée</strong>
+    <p>Produit : ${product}</p>
+    <p>Prix maximum : ${maxBuy || 'non défini'} €</p>
+    <p class="small">
+      Le moteur Internet sera connecté dans l'étape suivante.
+    </p>
+  `;
+}
+
+
+function scanOpportunities(){
+
+  document.getElementById('opportunityResult').innerHTML = `
+    <strong>Scanner prêt</strong>
+    <p class="small">
+      Pearl Hunter attend maintenant la connexion aux vraies sources Internet.
+    </p>
+  `;
+
+  document.getElementById('engineStatus').innerText =
+    'Interface opérationnelle — sources à connecter.';
+}
+
+
+function saveSettings(){
+
+  const fees = document.getElementById('defaultFees').value;
+  const margin = document.getElementById('minimumMargin').value;
+
+  localStorage.setItem('defaultFees',fees);
+  localStorage.setItem('minimumMargin',margin);
+
+  document.getElementById('settingsResult').innerHTML =
+    `Paramètres enregistrés : frais ${fees} € — marge minimale ${margin} %.`;
+}
+
+</script></body>
+</html>
